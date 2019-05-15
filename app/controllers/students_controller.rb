@@ -14,18 +14,25 @@ class StudentsController < ApplicationController
   end
 
   def show
-    @student = Student.find(params[:id])
+    @student = get_student
   end
 
   def edit
-    @student = Student.find(params[:id])
+    @student = get_student
   end
 
   def update
-    @student = Student.find(params[:id])
+    @student = get_student
+    @student.update(post_params(:first_name, :last_name))
+    @student.save
+    redirect_to student_path(@student)
   end
 
   private
+
+  def get_student
+    Student.find(params[:id])
+  end
 
   def post_params(*args)
     params.require(:student).permit(*args)
